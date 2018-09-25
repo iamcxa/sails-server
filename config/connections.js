@@ -24,7 +24,7 @@ module.exports.connections = {
   mysql: {
     user: process.env.MYSQL_ENV_MYSQL_USER_NAME || 'root',
     password: process.env.MYSQL_ENV_MYSQL_USER_PASS || 'root',
-    database: process.env.MYSQL_ENV_MYSQL_USER_DB || 'MoreAppCMS',
+    database: process.env.MYSQL_ENV_MYSQL_USER_DB || 'sails-db',
     dialect: 'mysql',
     options: {
       host: process.env.MYSQL_PORT_3306_TCP_ADDR || '127.0.0.1',
@@ -32,7 +32,6 @@ module.exports.connections = {
       dialect: 'mysql',
       dialectOptions: {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci',
         supportBigNumbers: true,
         bigNumberStrings: true,
       },
@@ -59,7 +58,6 @@ module.exports.connections = {
       dialect: 'mysql',
       dialectOptions: {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci',
         supportBigNumbers: true,
         bigNumberStrings: true,
       },
@@ -82,7 +80,6 @@ module.exports.connections = {
       dialect: 'sqlite',
       dialectOptions: {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci',
         supportBigNumbers: true,
         bigNumberStrings: true,
         pool: {
@@ -115,7 +112,6 @@ module.exports.connections = {
       dialect: 'mysql',
       dialectOptions: {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci',
         supportBigNumbers: true,
         bigNumberStrings: true,
       },
