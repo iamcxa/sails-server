@@ -1,4 +1,8 @@
 {
+  "hooks": {
+    "orm": false,
+    "pubsub": false
+  },
   "generators": {
     "modules": {}
   },
@@ -7,3 +11,4 @@
     "sails-generate": "1.15.28"
   }
 }
+

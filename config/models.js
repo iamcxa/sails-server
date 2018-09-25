@@ -118,7 +118,20 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
 
-  cascadeOnDestroy: true
+  cascadeOnDestroy: true,
 
 
+  /***************************************************************************
+  *                                                                          *
+  * This is for sails-hook-sequelize extension configs.                      *
+  *                                                                          *
+  ***************************************************************************/
+  datastore: 'sqlite',
+
+  hook: {},
+
+  classMethod: {},
+
+  instanceMethod: {},
 };
+

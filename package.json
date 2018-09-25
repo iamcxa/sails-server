@@ -9,20 +9,27 @@
     "@sailshq/lodash": "^3.10.3",
     "@sailshq/socket.io-redis": "^5.2.0",
     "async": "2.0.1",
+    "esm": "^3.0.84",
     "grunt": "1.0.1",
+    "jsonwebtoken": "^8.3.0",
+    "mysql2": "^1.6.1",
     "sails": "^1.0.2",
+    "sails-hook-apianalytics": "^2.0.3",
     "sails-hook-autoreload": "^1.1.0",
+    "sails-hook-cron": "^3.0.0",
     "sails-hook-grunt": "^3.0.2",
     "sails-hook-orm": "^2.0.0-16",
-    "sails-hook-sequelize": "^1.2.0",
+    "sails-hook-sequelize": "git+https://github.com/MoreAppio/sails-hook-sequelize.git",
     "sails-hook-sockets": "^1.4.0",
-    "sails-util-micro-apps": "git+https://github.com/MoreAppio/sails-util-micro-apps.git"
+    "sails-util-micro-apps": "git+https://github.com/MoreAppio/sails-util-micro-apps.git",
+    "sqlite3": "^4.0.2"
   },
   "devDependencies": {
     "@sailshq/eslint": "^4.19.3"
   },
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
+    "start": "NODE_ENV=development node -r esm app.js",
+    "production": "NODE_ENV=production node -r esm app.js",
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "custom-tests": "echo \"(No other custom tests yet.)\" && echo"
