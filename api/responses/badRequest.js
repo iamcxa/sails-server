@@ -16,61 +16,62 @@
  */
 import _ from 'lodash';
 
+const defaultMessage = 'badRequest';
+
 module.exports = function badRequest(rawData, options) {
   // Get access to `req`, `res`, & `sails`
   const { req, res } = this;
   const sails = req._sails;
-  let data = rawData;
+  let data = {
+    langCode: req.getLocale(),
+    controller: req.options.controller,
+    action: req.options.action,
+    success: false,
+  };
 
   // Set status code
   res.status(400);
 
-  if (!data) {
-    data = {
-      message: '',
-      success: false,
-    };
-  } else if (typeof data === 'string') {
-    const phrases = data.split(',');
+  // get i18n and params
+  if (!rawData) {
+    data.message = defaultMessage;
+  } else if (typeof rawData === 'string') {
+    const phrases = rawData.split('|');
     const i18nMessage = sails.__({
       phrase: phrases[0],
       locale: req.param('langCode', req.getLocale()),
     });
-    // console.log(req.param('langCode', req.getLocale()), i18nMessage);
+    const detailMessage = phrases[1]
+      ? `|${phrases[1]}`
+      : '';
+    data.message = `${i18nMessage}${detailMessage}`;
+  } else if (typeof rawData === 'object') {
+    const i18nMessage = sails.__({
+      phrase: rawData.phrase,
+      locale: req.param('langCode', req.getLocale()),
+    });
     data = {
-      message: `${i18nMessage}${phrases[1]}`,
-      success: false,
+      ...data,
+      ..._.omit(rawData, ['phrase']),
+      message: i18nMessage,
     };
+  }
+
+  // delete sensitive information in production mode.
+  if (sails.config.environment === 'production') {
+    delete data.stack;
+    delete data.controller;
+    delete data.action;
   }
 
   // If the user-agent wants JSON, always respond with JSON
   if (req.wantsJSON) {
-    data.controller = req.options.controller;
-    data.action = req.options.action;
-    data.success = false;
-    data.langCode = req.getLocale();
-    if (!data.data) data.data = {};
-    if (!data.message) {
-      data.message = '';
-    }
-    const i18n = sails.__({
-      phrase: data.message,
-      // locale: _.hasIn(req, 'langCode') || req.getLocale(),
-      locale: req.param('langCode', req.getLocale()),
-    });
-    if (i18n) {
-      data.message = i18n;
-    }
-    if (sails.config.environment === 'production') {
-      delete data.stack;
-      delete data.controller;
-      delete data.action;
-    }
     return res.json(data);
   }
 
   // If second argument is a string, we take that to mean it refers to a view.
   // If it was omitted, use an empty object (`{}`)
+  /* eslint-disable-next-line no-param-reassign */
   options = (typeof options === 'string') ? { view: options } : options || {};
 
   // If a view was provided in options, serve it.
@@ -81,13 +82,5 @@ module.exports = function badRequest(rawData, options) {
   } if (options.redirect) {
     return res.redirect(options.redirect);
   }
-
-  // If no second argument provided, try to serve the implied view,
-  // but fall back to sending JSON(P) if no view can be inferred.
-  return res.view('400', { data }, (err, html) => {
-    if (err) {
-      return res.json(data);
-    }
-    return res.send(html);
-  });
+  return res.json(data);
 };

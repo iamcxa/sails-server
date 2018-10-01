@@ -26,7 +26,15 @@
 // > Note: This is not required in order to lift, but it is a convenient default.
 process.chdir(__dirname);
 
-
+// give Unhandled Rejection a handler
+process.on('unhandledRejection', (error) => {
+  // Will print "unhandledRejection err is not defined"
+  if (error) {
+    console.error('\n\n ========= Unhandled Rejection ========= \n');
+    console.dir(error.message);
+    console.error('========= Unhandled Rejection ========= \n\n');
+  }
+});
 
 // Attempt to import `sails` dependency, as well as `rc` (for loading `.sailsrc` files).
 var sails;
@@ -48,7 +56,6 @@ try {
   console.error('(It even uses your app directory\'s local Sails install, if possible.)');
   return;
 }//-•
-
 
 // Start server
 sails.lift(rc('sails'));

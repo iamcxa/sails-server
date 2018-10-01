@@ -1,0 +1,8 @@
+-t 500000
+--require babel-core/register
+--require chai
+--recursive test/bootstrap.travis.js
+--recursive test/unit
+--recursive api/hooks/sails-project-**/test/unit/**/*.js
+--reporter spec
+--exit

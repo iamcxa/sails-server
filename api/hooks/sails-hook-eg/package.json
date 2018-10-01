@@ -20,7 +20,7 @@
     "sails": "~1.0.2"
   },
   "dependencies": {
-    "sails-util-micro-apps": "~0.1.0"
+    "sails-util-micro-apps": "git+https://github.com/MoreAppio/sails-util-micro-apps.git"
   },
   "sails": {
     "isHook": true
